@@ -1,369 +1,379 @@
-# 🔧 Troubleshooting Guide
+# GitHub Profile Shop - Troubleshooting Guide
 
-## Common Issues and Solutions
-
-### 1. Server Won't Start
-
-#### Problem: "Port 3000 is already in use"
-**Solution**:
-```bash
-# Windows
-netstat -ano | findstr :3000
-taskkill /PID <PID> /F
-
-# Change port in .env file
-PORT=3001
-```
-
-#### Problem: "Cannot find module"
-**Solution**:
-```bash
-# Reinstall dependencies
-rm -rf node_modules
-npm install
-```
-
-#### Problem: "dotenv not found"
-**Solution**:
-```bash
-npm install dotenv
-```
+## Common Issues & Solutions
 
 ---
 
-### 2. API Issues
+## 🚀 Server Issues
 
-#### Problem: "Failed to fetch users"
-**Possible Causes**:
-1. GitHub API rate limit exceeded
-2. Network connection issue
-3. Server not running
+### Server Won't Start
 
-**Solutions**:
-```bash
-# Check server logs
-# Look for rate limit errors
+**Symptoms:**
+- `npm start` fails
+- Port already in use error
+- Module not found errors
 
-# Add GitHub token to .env for higher limits
-GITHUB_TOKEN=your_token_here
+**Solutions:**
 
-# Clear cache and restart
-curl -X DELETE http://localhost:3000/api/github/cache
-```
+1. **Port in use:**
+   ```powershell
+   # Windows - Find and kill process on port 3000
+   netstat -ano | findstr :3000
+   taskkill /PID <PID> /F
+   ```
 
-#### Problem: "429 Too Many Requests"
-**Cause**: Rate limit exceeded
+2. **Missing dependencies:**
+   ```powershell
+   cd server
+   npm install
+   ```
 
-**Solutions**:
-1. Wait 15 minutes for rate limit reset
-2. Add GitHub token to `.env` file:
-   ```env
+3. **Wrong directory:**
+   ```powershell
+   # Make sure you're in the server folder
+   cd server
+   npm start
+   ```
+
+---
+
+### Rate Limit Exceeded
+
+**Symptoms:**
+- 429 Too Many Requests error
+- "Rate limit exceeded" message
+- API stops responding
+
+**Solutions:**
+
+1. **Wait for reset** - Rate limit resets every 15 minutes
+
+2. **Add GitHub token** to increase limits:
+   ```powershell
+   # In server/.env
    GITHUB_TOKEN=ghp_your_token_here
    ```
-3. Get token from: https://github.com/settings/tokens
+
+3. **Check current limits:**
+   ```javascript
+   // Server shows rate limit in response headers
+   X-RateLimit-Remaining: 95
+   ```
 
 ---
 
-### 3. Frontend Issues
+### Cache Issues
 
-#### Problem: "Page not rendering"
-**Solutions**:
-1. Check if server is running at `http://localhost:3000`
-2. Open browser console (F12) for errors
-3. Clear browser cache (Ctrl+Shift+Delete)
-4. Try hard refresh (Ctrl+Shift+R)
+**Symptoms:**
+- Stale data showing
+- Changes not reflecting
+- Inconsistent results
 
-#### Problem: "Images not loading"
-**Cause**: CORS or network issue
+**Solutions:**
 
-**Solution**:
-```bash
-# Check browser console for CORS errors
-# Restart server
-npm run dev
-```
-
-#### Problem: "Modal not opening"
-**Solutions**:
-1. Check browser console for JavaScript errors
-2. Clear browser cache
-3. Verify API endpoint is working:
+1. **Clear server cache:**
    ```bash
-   curl http://localhost:3000/api/github/user/octocat
+   curl -X DELETE "http://localhost:3000/api/github/cache"
    ```
 
-#### Problem: "Search not working"
-**Solutions**:
-1. Check if you're typing at least 2 characters
-2. Verify API endpoint:
-   ```bash
+2. **Clear browser cache:**
+   - Press `Ctrl + Shift + R` for hard refresh
+   - Open DevTools > Application > Clear storage
+
+3. **Restart server:**
+   ```powershell
+   # Press Ctrl+C to stop, then:
+   npm start
+   ```
+
+---
+
+## 🎨 UI Issues
+
+### Dark Theme Not Working
+
+**Symptoms:**
+- White/light backgrounds showing
+- Text hard to read
+- Colors look washed out
+
+**Solutions:**
+
+1. **Hard refresh the page:**
+   ```
+   Ctrl + Shift + R
+   ```
+
+2. **Clear browser cache:**
+   - DevTools > Application > Clear site data
+
+3. **Check CSS loading:**
+   - Open DevTools > Network
+   - Verify `styles.css` loads without errors
+
+---
+
+### Following Dropdown Empty
+
+**Symptoms:**
+- Dropdown shows but no users
+- "No users followed yet" always shown
+- Follow button not working
+
+**Solutions:**
+
+1. **Check localStorage:**
+   ```javascript
+   // In browser console
+   localStorage.getItem('followedUsers')
+   ```
+
+2. **Clear and refresh:**
+   ```javascript
+   // Reset followed users
+   localStorage.setItem('followedUsers', '[]')
+   location.reload()
+   ```
+
+3. **Ensure user exists** before following:
+   - Search for the user first
+   - Click the user card
+   - Use the Follow button in modal
+
+---
+
+### Hamburger Menu Not Opening
+
+**Symptoms:**
+- Hamburger icon doesn't respond
+- Menu opens but closes immediately
+- Menu animations broken
+
+**Solutions:**
+
+1. **Check JavaScript console:**
+   - Press F12 > Console tab
+   - Look for red error messages
+
+2. **Verify script loading:**
+   - DevTools > Network
+   - Check if `script.js` loads successfully
+
+3. **Disable browser extensions:**
+   - Some ad blockers interfere with menus
+
+---
+
+### Search Not Working
+
+**Symptoms:**
+- Search returns no results
+- Loading spinner never stops
+- Error on search
+
+**Solutions:**
+
+1. **Check server is running:**
+   ```powershell
+   curl http://localhost:3000/api/health
+   ```
+
+2. **Verify search endpoint:**
+   ```powershell
    curl "http://localhost:3000/api/github/search?q=test"
    ```
-3. Check browser console for errors
+
+3. **Check browser console** for JavaScript errors
 
 ---
 
-### 4. Performance Issues
+## 🔌 API Issues
 
-#### Problem: "Slow loading"
-**Solutions**:
-1. **Enable caching**: Already enabled by default (10 min TTL)
-2. **Add GitHub token**: Increases rate limits
-3. **Clear old cache**:
-   ```bash
-   curl -X DELETE http://localhost:3000/api/github/cache
+### GitHub API 403 Forbidden
+
+**Symptoms:**
+- API returns 403 error
+- "API rate limit exceeded" message
+- Requests blocked
+
+**Solutions:**
+
+1. **Add GitHub personal access token:**
+   ```powershell
+   # Create .env file in server folder
+   echo "GITHUB_TOKEN=ghp_your_token" > server/.env
    ```
-4. **Check network**: Open DevTools > Network tab
 
-#### Problem: "High memory usage"
-**Solutions**:
-1. Restart the server
-2. Reduce cache TTL in `server/config/config.js`:
-   ```javascript
-   cache: {
-       stdTTL: 300, // 5 minutes instead of 10
-       checkperiod: 60
-   }
+2. **Get a token:**
+   - Go to https://github.com/settings/tokens
+   - Generate new token (classic)
+   - Select scopes: `public_repo`, `read:user`
+
+3. **Restart server** after adding token
+
+---
+
+### CORS Errors
+
+**Symptoms:**
+- "Access-Control-Allow-Origin" errors
+- Requests blocked in browser
+- Works in Postman but not browser
+
+**Solutions:**
+
+1. **Check server CORS config:**
+   - Server should have `cors` middleware enabled
+   - Verify in `server/server.js`
+
+2. **Use correct origin:**
+   - Access via `http://localhost:3000`
+   - Not via `file://` protocol
+
+3. **Check browser extensions** that might block CORS
+
+---
+
+### 404 User Not Found
+
+**Symptoms:**
+- User profile returns 404
+- "User not found" error
+- Profile won't load
+
+**Solutions:**
+
+1. **Verify username exists:**
+   - Go to `https://github.com/<username>`
+   - Check spelling
+
+2. **Check API response:**
+   ```powershell
+   curl "http://localhost:3000/api/github/user/<username>"
+   ```
+
+3. **Clear cache and retry:**
+   ```powershell
+   curl -X DELETE "http://localhost:3000/api/github/cache"
    ```
 
 ---
 
-### 5. Installation Issues
+## 💻 Installation Issues
 
-#### Problem: "npm install fails"
-**Solutions**:
-```bash
+### npm install Fails
+
+**Symptoms:**
+- Package installation errors
+- Permission denied
+- Network errors
+
+**Solutions:**
+
+1. **Update npm:**
+   ```powershell
+   npm install -g npm@latest
+   ```
+
+2. **Clear npm cache:**
+   ```powershell
+   npm cache clean --force
+   ```
+
+3. **Delete node_modules and retry:**
+   ```powershell
+   Remove-Item -Recurse -Force node_modules
+   npm install
+   ```
+
+---
+
+### Node.js Version Issues
+
+**Symptoms:**
+- Syntax errors on server start
+- Module compatibility issues
+- "Unexpected token" errors
+
+**Solutions:**
+
+1. **Check Node version:**
+   ```powershell
+   node --version
+   # Should be v14 or higher
+   ```
+
+2. **Install latest LTS:**
+   - Download from https://nodejs.org
+   - Or use nvm for Windows
+
+---
+
+## 🎯 Quick Debug Checklist
+
+When something goes wrong, check these in order:
+
+1. ✅ **Server running?**
+   ```powershell
+   curl http://localhost:3000/api/health
+   ```
+
+2. ✅ **Console errors?**
+   - Press F12 > Console tab
+
+3. ✅ **Network requests?**
+   - F12 > Network tab > Look for red failures
+
+4. ✅ **Cache cleared?**
+   - Server: DELETE /api/github/cache
+   - Browser: Ctrl + Shift + R
+
+5. ✅ **Rate limited?**
+   - Check response for 429 status
+   - Add GitHub token if needed
+
+---
+
+## 📞 Getting Help
+
+If issues persist:
+
+1. **Check GitHub Issues:**
+   https://github.com/DivyanshuXOR/GitHub-User-Explorer/issues
+
+2. **Create new issue** with:
+   - Browser name and version
+   - Node.js version (`node --version`)
+   - Error messages from console
+   - Steps to reproduce
+
+3. **Include screenshots** of errors when possible
+
+---
+
+## 🔄 Reset Everything
+
+Nuclear option if nothing else works:
+
+```powershell
+# Stop server (Ctrl+C if running)
+
+# Delete node_modules
+Remove-Item -Recurse -Force server/node_modules
+
 # Clear npm cache
 npm cache clean --force
 
-# Use different registry
-npm config set registry https://registry.npmjs.org/
-
-# Retry installation
+# Reinstall
+cd server
 npm install
-```
 
-#### Problem: "Node version incompatible"
-**Solution**:
-```bash
-# Check Node version
-node --version
+# Clear any .env issues
+# Make sure .env is correct (or delete it for defaults)
 
-# Upgrade to Node v14 or higher
-# Download from: https://nodejs.org/
-```
-
----
-
-### 6. Development Issues
-
-#### Problem: "Nodemon not working"
-**Solution**:
-```bash
-# Install nodemon globally
-npm install -g nodemon
-
-# Or use npx
-npx nodemon server/server.js
-
-# Or use npm start instead
+# Start fresh
 npm start
+
+# In browser - clear all data
+# DevTools > Application > Clear site data
 ```
-
-#### Problem: "Changes not reflecting"
-**Solutions**:
-1. Save all files (Ctrl+S)
-2. Nodemon should auto-restart (check terminal)
-3. Hard refresh browser (Ctrl+Shift+R)
-4. Restart server manually:
-   ```bash
-   # Press Ctrl+C to stop
-   npm run dev
-   ```
-
----
-
-### 7. Browser-Specific Issues
-
-#### Problem: "Works in Chrome but not Firefox/Safari"
-**Solutions**:
-1. Clear browser cache and cookies
-2. Check for browser console errors
-3. Update browser to latest version
-4. Try in incognito/private mode
-
-#### Problem: "Animations not smooth"
-**Solutions**:
-1. Close other tabs/applications
-2. Update GPU drivers
-3. Disable browser extensions
-4. Try different browser
-
----
-
-### 8. API Error Messages
-
-#### Error: "GitHub API rate limit exceeded"
-**Solution**:
-```env
-# Add to .env file
-GITHUB_TOKEN=your_github_token
-
-# Get token from:
-# https://github.com/settings/tokens
-# No special scopes needed for public data
-```
-
-#### Error: "Network error"
-**Solutions**:
-1. Check internet connection
-2. Verify GitHub is accessible: https://github.com
-3. Check firewall settings
-4. Try different network
-
-#### Error: "Failed to fetch user details"
-**Cause**: User doesn't exist or is suspended
-
-**Solution**: Try different username
-
----
-
-### 9. Debugging Tips
-
-#### Enable Verbose Logging
-Add to `server/server.js`:
-```javascript
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-});
-```
-
-#### Check API Endpoints
-```bash
-# Health check
-curl http://localhost:3000/api/health
-
-# Test users endpoint
-curl http://localhost:3000/api/github/users
-
-# Test search
-curl "http://localhost:3000/api/github/search?q=test"
-
-# Check specific user
-curl http://localhost:3000/api/github/user/octocat
-```
-
-#### Browser DevTools
-1. Press F12 to open DevTools
-2. Check **Console** tab for JavaScript errors
-3. Check **Network** tab for failed requests
-4. Check **Application** tab to clear cache
-
----
-
-### 10. Production Deployment Issues
-
-#### Problem: "Works locally but not in production"
-**Solutions**:
-1. Check environment variables are set
-2. Verify PORT is correctly configured
-3. Check server logs for errors
-4. Ensure all dependencies are installed:
-   ```bash
-   npm ci --production
-   ```
-
-#### Problem: "Static files not loading"
-**Solution**:
-```javascript
-// Verify in server.js
-app.use(express.static(path.join(__dirname, '..', 'public')));
-```
-
----
-
-## Quick Diagnostics
-
-### 1. Server Health Check
-```bash
-curl http://localhost:3000/api/health
-# Expected: {"status":"OK","timestamp":"..."}
-```
-
-### 2. Test API Response
-```bash
-curl http://localhost:3000/api/github/users?per_page=1
-# Expected: {"success":true,"data":[...]}
-```
-
-### 3. Check Rate Limit Status
-Look for these headers in response:
-```
-RateLimit-Limit: 100
-RateLimit-Remaining: 95
-```
-
-### 4. View Server Logs
-Check terminal where server is running for:
-- Request logs
-- Error messages
-- Cache information
-
----
-
-## Getting Help
-
-### Check Logs
-1. **Server logs**: Check terminal where server is running
-2. **Browser console**: Press F12 > Console tab
-3. **Network tab**: F12 > Network tab to see failed requests
-
-### Collect Information
-When reporting issues, include:
-- Node version: `node --version`
-- npm version: `npm --version`
-- Operating system
-- Browser and version
-- Error messages from console
-- Server logs
-
-### GitHub Token Setup (Recommended)
-
-1. Go to: https://github.com/settings/tokens
-2. Click "Generate new token (classic)"
-3. Give it a name: "GitHub Profile Shop"
-4. No scopes needed for public data
-5. Click "Generate token"
-6. Copy token to `.env`:
-   ```env
-   GITHUB_TOKEN=ghp_your_token_here
-   ```
-7. Restart server
-
-This increases GitHub API limits from:
-- **Without token**: 60 requests/hour
-- **With token**: 5000 requests/hour
-
----
-
-## Still Having Issues?
-
-1. Try the example project structure
-2. Check if all files are in correct locations
-3. Verify all dependencies are installed
-4. Test with a fresh clone/installation
-5. Check GitHub API status: https://www.githubstatus.com/
-
----
-
-## Contact & Support
-
-- Check README.md for setup instructions
-- Review API_DOCUMENTATION.md for endpoint details
-- Read FEATURES.md for feature guides
-- Report bugs in GitHub Issues
-
----
-
-**Last Updated**: January 11, 2026

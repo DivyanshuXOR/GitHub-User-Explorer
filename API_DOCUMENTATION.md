@@ -10,7 +10,8 @@ http://localhost:3000/api/github
 - **Strict endpoints** (trending, cache): 30 requests per 15 minutes per IP
 
 ## Response Format
-All API responses follow this format:
+
+### Success Response
 ```json
 {
   "success": true,
@@ -18,7 +19,7 @@ All API responses follow this format:
 }
 ```
 
-Error responses:
+### Error Response
 ```json
 {
   "success": false,
@@ -32,17 +33,19 @@ Error responses:
 ## Endpoints
 
 ### 1. Fetch Users
-Retrieve a list of GitHub users.
+Retrieve a paginated list of GitHub users.
 
 **Endpoint**: `GET /api/github/users`
 
 **Query Parameters**:
-- `since` (optional): Starting user ID (default: 0)
-- `per_page` (optional): Number of users to fetch (default: 30, max: 100)
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `since` | number | 0 | Starting user ID for pagination |
+| `per_page` | number | 30 | Number of users to fetch (max: 100) |
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/github/users?since=0&per_page=15
+curl "http://localhost:3000/api/github/users?since=0&per_page=15"
 ```
 
 **Example Response**:
@@ -57,14 +60,10 @@ curl http://localhost:3000/api/github/users?since=0&per_page=15
       "type": "User",
       "name": "The Octocat",
       "company": "@github",
-      "blog": "https://github.blog",
       "location": "San Francisco",
-      "email": null,
-      "bio": "How people build software",
       "public_repos": 8,
       "followers": 100000,
-      "following": 0,
-      "repositories": [ ... ]
+      "following": 0
     }
   ]
 }
@@ -78,11 +77,13 @@ Fetch detailed information about a specific user.
 **Endpoint**: `GET /api/github/user/:username`
 
 **Path Parameters**:
-- `username`: GitHub username
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `username` | string | GitHub username |
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/github/user/octocat
+curl "http://localhost:3000/api/github/user/octocat"
 ```
 
 **Example Response**:
@@ -91,6 +92,7 @@ curl http://localhost:3000/api/github/user/octocat
   "success": true,
   "data": {
     "login": "octocat",
+    "id": 1,
     "name": "The Octocat",
     "avatar_url": "https://avatars.githubusercontent.com/u/1?v=4",
     "bio": "How people build software",
@@ -100,11 +102,12 @@ curl http://localhost:3000/api/github/user/octocat
     "blog": "https://github.blog",
     "twitter_username": null,
     "public_repos": 8,
+    "public_gists": 8,
     "followers": 100000,
     "following": 0,
     "created_at": "2011-01-25T18:44:36Z",
     "updated_at": "2024-01-10T12:00:00Z",
-    "repositories": [ ... ]
+    "hireable": true
   }
 }
 ```
@@ -112,17 +115,19 @@ curl http://localhost:3000/api/github/user/octocat
 ---
 
 ### 3. Search Users
-Search for GitHub users by query.
+Search for GitHub users by query string.
 
 **Endpoint**: `GET /api/github/search`
 
 **Query Parameters**:
-- `q` (required): Search query
-- `page` (optional): Page number (default: 1)
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `q` | string | required | Search query |
+| `page` | number | 1 | Page number |
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/github/search?q=john&page=1
+curl "http://localhost:3000/api/github/search?q=john&page=1"
 ```
 
 **Example Response**:
@@ -152,14 +157,19 @@ Fetch repositories for a specific user.
 **Endpoint**: `GET /api/github/user/:username/repos`
 
 **Path Parameters**:
-- `username`: GitHub username
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `username` | string | GitHub username |
 
 **Query Parameters**:
-- `sort` (optional): Sort method - `created`, `updated`, `pushed`, `full_name` (default: updated)
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `sort` | string | updated | Sort by: updated, created, pushed, full_name |
+| `per_page` | number | 10 | Number of repos to fetch |
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/github/user/octocat/repos?sort=updated
+curl "http://localhost:3000/api/github/user/octocat/repos?sort=updated&per_page=5"
 ```
 
 **Example Response**:
@@ -170,17 +180,12 @@ curl http://localhost:3000/api/github/user/octocat/repos?sort=updated
     {
       "name": "Hello-World",
       "full_name": "octocat/Hello-World",
-      "description": "My first repository",
+      "description": "My first repository on GitHub!",
       "html_url": "https://github.com/octocat/Hello-World",
-      "stargazers_count": 1234,
-      "forks_count": 567,
       "language": "JavaScript",
-      "created_at": "2011-01-26T19:01:12Z",
-      "updated_at": "2024-01-10T12:00:00Z",
-      "license": {
-        "name": "MIT License",
-        "spdx_id": "MIT"
-      }
+      "stargazers_count": 1000,
+      "forks_count": 500,
+      "updated_at": "2024-01-10T12:00:00Z"
     }
   ]
 }
@@ -188,97 +193,19 @@ curl http://localhost:3000/api/github/user/octocat/repos?sort=updated
 
 ---
 
-### 5. Get User Gists
-Fetch gists for a specific user.
-
-**Endpoint**: `GET /api/github/user/:username/gists`
-
-**Path Parameters**:
-- `username`: GitHub username
-
-**Example Request**:
-```bash
-curl http://localhost:3000/api/github/user/octocat/gists
-```
-
-**Example Response**:
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": "abc123",
-      "description": "Example gist",
-      "html_url": "https://gist.github.com/abc123",
-      "created_at": "2024-01-01T12:00:00Z",
-      "files": {
-        "example.js": {
-          "filename": "example.js",
-          "type": "application/javascript",
-          "language": "JavaScript",
-          "size": 1234
-        }
-      }
-    }
-  ]
-}
-```
-
----
-
-### 6. Get Trending Repositories
-Fetch trending repositories filtered by language and time range.
-
-**Endpoint**: `GET /api/github/trending`
-
-**Rate Limit**: Strict (30 requests per 15 minutes)
-
-**Query Parameters**:
-- `language` (optional): Programming language filter (e.g., javascript, python)
-- `since` (optional): Time range - `daily`, `weekly`, `monthly` (default: weekly)
-
-**Example Request**:
-```bash
-curl http://localhost:3000/api/github/trending?language=javascript&since=weekly
-```
-
-**Example Response**:
-```json
-{
-  "success": true,
-  "data": {
-    "total_count": 5000,
-    "items": [
-      {
-        "name": "awesome-project",
-        "full_name": "user/awesome-project",
-        "description": "An awesome trending project",
-        "html_url": "https://github.com/user/awesome-project",
-        "stargazers_count": 5000,
-        "forks_count": 1000,
-        "language": "JavaScript"
-      }
-    ]
-  }
-}
-```
-
----
-
-### 7. Get User Followers
+### 5. Get User Followers
 Fetch followers for a specific user.
 
 **Endpoint**: `GET /api/github/user/:username/followers`
 
 **Path Parameters**:
-- `username`: GitHub username
-
-**Query Parameters**:
-- `page` (optional): Page number (default: 1)
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `username` | string | GitHub username |
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/github/user/octocat/followers
+curl "http://localhost:3000/api/github/user/octocat/followers"
 ```
 
 **Example Response**:
@@ -290,7 +217,7 @@ curl http://localhost:3000/api/github/user/octocat/followers
       "login": "follower1",
       "id": 456,
       "avatar_url": "https://avatars.githubusercontent.com/u/456?v=4",
-      "html_url": "https://github.com/follower1"
+      "type": "User"
     }
   ]
 }
@@ -298,66 +225,111 @@ curl http://localhost:3000/api/github/user/octocat/followers
 
 ---
 
-### 8. Get User Following
-Fetch users that a specific user is following.
+### 6. Get User Following
+Fetch users that a specific user follows.
 
 **Endpoint**: `GET /api/github/user/:username/following`
 
 **Path Parameters**:
-- `username`: GitHub username
-
-**Query Parameters**:
-- `page` (optional): Page number (default: 1)
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `username` | string | GitHub username |
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/github/user/octocat/following
+curl "http://localhost:3000/api/github/user/octocat/following"
 ```
 
 ---
 
-### 9. Clear Cache
-Clear server-side cache (admin endpoint).
+### 7. Get User Gists
+Fetch gists for a specific user.
 
-**Endpoint**: `DELETE /api/github/cache`
+**Endpoint**: `GET /api/github/user/:username/gists`
 
-**Rate Limit**: Strict (30 requests per 15 minutes)
-
-**Query Parameters**:
-- `key` (optional): Specific cache key to clear. If omitted, clears all cache.
+**Path Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `username` | string | GitHub username |
 
 **Example Request**:
 ```bash
-curl -X DELETE http://localhost:3000/api/github/cache
-curl -X DELETE "http://localhost:3000/api/github/cache?key=user_octocat"
+curl "http://localhost:3000/api/github/user/octocat/gists"
 ```
 
 **Example Response**:
 ```json
 {
   "success": true,
-  "message": "All cache cleared"
+  "data": [
+    {
+      "id": "gist123",
+      "description": "My code snippet",
+      "html_url": "https://gist.github.com/octocat/gist123",
+      "files": { ... },
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  ]
 }
 ```
 
 ---
 
-### 10. Health Check
-Check server health status.
+### 8. Get Trending Repositories
+Fetch trending repositories from GitHub.
+
+**Endpoint**: `GET /api/github/trending`
+
+**Query Parameters**:
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `language` | string | javascript | Programming language |
+| `since` | string | weekly | Time range: daily, weekly, monthly |
+
+**Example Request**:
+```bash
+curl "http://localhost:3000/api/github/trending?language=javascript&since=weekly"
+```
+
+---
+
+### 9. Health Check
+Check if the server is running.
 
 **Endpoint**: `GET /api/health`
 
 **Example Request**:
 ```bash
-curl http://localhost:3000/api/health
+curl "http://localhost:3000/api/health"
 ```
 
 **Example Response**:
 ```json
 {
   "status": "OK",
-  "timestamp": "2024-01-11T12:00:00.000Z"
+  "timestamp": "2024-01-10T12:00:00Z"
 }
+```
+
+---
+
+### 10. Clear Cache
+Clear the server-side cache.
+
+**Endpoint**: `DELETE /api/github/cache`
+
+**Query Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `key` | string | Optional specific cache key to clear |
+
+**Example Request**:
+```bash
+# Clear all cache
+curl -X DELETE "http://localhost:3000/api/github/cache"
+
+# Clear specific key
+curl -X DELETE "http://localhost:3000/api/github/cache?key=users_0_30"
 ```
 
 ---
@@ -368,50 +340,61 @@ curl http://localhost:3000/api/health
 |-------------|-------------|
 | 200 | Success |
 | 400 | Bad Request - Invalid parameters |
-| 404 | Not Found - User or resource not found |
+| 404 | Not Found - User/resource not found |
 | 429 | Too Many Requests - Rate limit exceeded |
 | 500 | Internal Server Error |
+| 503 | Service Unavailable - GitHub API down |
+
+---
 
 ## Rate Limit Headers
 
-All responses include rate limit information:
+Response headers include rate limit information:
 ```
-RateLimit-Limit: 100
-RateLimit-Remaining: 95
-RateLimit-Reset: 1641916800
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1704888000
 ```
+
+---
 
 ## Caching
 
-- **Default TTL**: 10 minutes (600 seconds)
-- **Cache Keys**: Automatically generated based on endpoint and parameters
-- **Cache Clear**: Use the `/cache` endpoint to manually clear cache
+- Default TTL: 10 minutes (600 seconds)
+- Cache is automatically invalidated on expiry
+- Use `/api/github/cache` DELETE to manually clear
+
+---
 
 ## Authentication
 
-Currently, the API doesn't require authentication. However, you can add a GitHub token in the `.env` file to increase rate limits:
+### Without Token
+- 60 requests per hour to GitHub API
+- Suitable for development/testing
 
+### With Token
+Add to `server/.env`:
 ```env
-GITHUB_TOKEN=your_github_personal_access_token
+GITHUB_TOKEN=ghp_your_token_here
 ```
+- 5000 requests per hour to GitHub API
+- Recommended for production
 
-This will increase GitHub API rate limits from 60 to 5000 requests per hour.
+Get your token: https://github.com/settings/tokens
 
-## Examples
+---
 
-### JavaScript/Fetch
+## Example Integration
+
+### JavaScript Fetch
 ```javascript
-// Fetch users
-const response = await fetch('/api/github/users?since=0&per_page=15');
-const data = await response.json();
+// Get user profile
+const response = await fetch('/api/github/user/octocat');
+const { success, data } = await response.json();
 
-// Search users
-const searchResponse = await fetch('/api/github/search?q=john');
-const searchData = await searchResponse.json();
-
-// Get user details
-const userResponse = await fetch('/api/github/user/octocat');
-const userData = await userResponse.json();
+if (success) {
+  console.log(data.name); // "The Octocat"
+}
 ```
 
 ### cURL
@@ -419,13 +402,9 @@ const userData = await userResponse.json();
 # Get users
 curl http://localhost:3000/api/github/users
 
-# Search with query
-curl "http://localhost:3000/api/github/search?q=javascript+developer"
+# Search
+curl "http://localhost:3000/api/github/search?q=react"
 
-# Get trending repos
-curl "http://localhost:3000/api/github/trending?language=python&since=weekly"
+# Get specific user
+curl http://localhost:3000/api/github/user/facebook
 ```
-
----
-
-**Last Updated**: January 11, 2026

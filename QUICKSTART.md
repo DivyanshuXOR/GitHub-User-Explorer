@@ -1,6 +1,6 @@
 # 🚀 Quick Start Guide
 
-Get up and running in 2 minutes!
+Get GitHub Profile Shop running in 2 minutes!
 
 ## Prerequisites
 - Node.js v14+ installed
@@ -9,17 +9,23 @@ Get up and running in 2 minutes!
 
 ## Installation
 
-### 1. Install Dependencies
+### 1. Clone the Repository
+```bash
+git clone https://github.com/DivyanshuXOR/GitHub-User-Explorer.git
+cd GitHub-User-Explorer
+```
+
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 2. Start the Server
+### 3. Start the Server
 ```bash
 npm run dev
 ```
 
-### 3. Open Your Browser
+### 4. Open Your Browser
 Navigate to: **http://localhost:3000**
 
 That's it! 🎉
@@ -33,11 +39,13 @@ For higher API rate limits (5000 requests/hour vs 60):
 1. **Get a GitHub Token**
    - Visit: https://github.com/settings/tokens
    - Click "Generate new token (classic)"
-   - Give it a name (no scopes needed)
+   - Give it a name (no scopes needed for public data)
    - Copy the token
 
-2. **Add to .env file**
+2. **Create/Edit .env file** in the `server/` folder:
    ```env
+   PORT=3000
+   NODE_ENV=development
    GITHUB_TOKEN=ghp_your_token_here
    ```
 
@@ -51,52 +59,59 @@ For higher API rate limits (5000 requests/hour vs 60):
 
 ## First Steps
 
-1. **Browse Profiles**: Scroll through GitHub users
-2. **Search**: Type in the search box to find users
-3. **View Details**: Click on any profile to see full information
-4. **Follow Users**: Click the + button to add to your list
-5. **Try Easter Eggs**: Press ↑↑↓↓←→←→BA for fun!
+### 1. Search for Users
+- Use the search bar in the hero section
+- Type a GitHub username and press Enter or click "Explore"
+
+### 2. Browse Profiles
+- Scroll through the profile grid
+- Click on any card to view full details
+
+### 3. Follow Users
+- Click the + button on profile cards
+- View your following list via the "Following" dropdown
+
+### 4. Use Quick Actions
+- Click the hamburger menu (☰)
+- Try Random, Popular, Most Repos, or A-Z sorting
+
+### 5. Easter Egg
+- Press: ↑↑↓↓←→←→BA for a surprise!
 
 ---
 
 ## Project Structure
 ```
-slush/
 ├── server/
-│   ├── config/         # Configuration files
+│   ├── config/         # Configuration
 │   ├── middleware/     # Rate limiting
 │   ├── routes/         # API routes
 │   ├── services/       # GitHub service
 │   └── server.js       # Main server
 ├── public/
-│   ├── pages/          # HTML files
-│   ├── assets/
-│   │   ├── css/        # Styles
-│   │   └── js/         # Frontend logic
-│   └── ...
+│   ├── pages/
+│   │   └── index.html  # Main page
+│   └── assets/
+│       ├── css/        # Styles
+│       └── js/         # Frontend logic
 └── package.json
 ```
 
 ---
 
-## Available Scripts
+## Available Commands
 
 ```bash
-# Development with auto-reload
+# Development (auto-reload)
 npm run dev
 
 # Production
 npm start
-
-# Check for errors
-node server/server.js
 ```
 
 ---
 
-## Quick Testing
-
-Test if everything works:
+## Quick API Test
 
 ```bash
 # Health check
@@ -106,21 +121,26 @@ curl http://localhost:3000/api/health
 curl http://localhost:3000/api/github/users
 
 # Search users
-curl "http://localhost:3000/api/github/search?q=john"
+curl "http://localhost:3000/api/github/search?q=octocat"
+
+# Get specific user
+curl http://localhost:3000/api/github/user/octocat
 ```
 
 ---
 
 ## Features at a Glance
 
-✅ GitHub profile browsing  
-✅ Real-time search  
-✅ Profile detail modal  
-✅ Repository viewing  
-✅ Follower/following lists  
-✅ Trending repositories  
-✅ Rate limiting  
+✅ Dark theme with Webflow animations  
+✅ GitHub user search by username  
+✅ Detailed profile view with repos & followers  
+✅ Follow/unfollow system with dropdown  
+✅ Full-screen navigation menu  
+✅ Quick actions (Random, Popular, A-Z)  
+✅ Category filters (All, Developers, Organizations)  
+✅ Responsive design  
 ✅ Server-side caching  
+✅ Rate limiting  
 ✅ Easter eggs!  
 
 ---
@@ -136,20 +156,12 @@ curl "http://localhost:3000/api/github/search?q=john"
 
 ## Tips
 
-💡 **Tip 1**: Add a GitHub token for unlimited usage  
-💡 **Tip 2**: Click on profile avatars for quick access to details  
-💡 **Tip 3**: Try the Konami code for a surprise!  
-💡 **Tip 4**: Use search with 2+ characters for GitHub-wide search  
+💡 **Tip 1**: Add a GitHub token for 5000 requests/hour  
+💡 **Tip 2**: Use the menu for quick sorting options  
+💡 **Tip 3**: Click "Following" to manage your list  
+💡 **Tip 4**: Press ESC to close menus and modals  
+💡 **Tip 5**: Try the Konami code for fun!  
 
 ---
 
-## Next Steps
-
-1. ⭐ Explore all features in [FEATURES.md](FEATURES.md)
-2. 🔌 Check available API endpoints in [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
-3. 🎨 Customize the UI in `public/assets/css/styles.css`
-4. 🚀 Deploy to production
-
----
-
-**Enjoy building with GitHub Profile Shop!** 🎉
+**Enjoy exploring GitHub profiles!** 🎉
