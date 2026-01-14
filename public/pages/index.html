@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The GitHub Profile Shop | Code Your Vibe</title>
     <link rel="icon" type="image/png" href="https://github.githubassets.com/favicons/favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.prod.website-files.com/690d4ee3c81f8e10ceaf1612/css/sign-zano.webflow.shared.8493eb61c.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <style>
@@ -84,6 +84,642 @@
             ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch")
         }(window, document);
     </script>
+    <style>
+        /* Override styles for dark theme compatibility */
+        body.body {
+            background: #0d1117;
+            color: #fff;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            background: #0d1117;
+            padding-top: 60px;
+        }
+        
+        /* Shop Controls */
+        .shop-controls {
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+        
+        .section-title {
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .sort-dropdown span {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .sort-dropdown select {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 10px 15px;
+        }
+        
+        .sort-dropdown select option {
+            background: #0d1117;
+            color: #fff;
+        }
+        
+        /* Profile Cards */
+        .profile-card {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .profile-card:hover {
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .card-category {
+            color: #58a6ff;
+        }
+        
+        .card-title {
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .card-content .btn-outline {
+            background: transparent;
+            border-color: rgba(255,255,255,0.3);
+            color: #fff;
+        }
+        
+        .card-content .btn-outline:hover {
+            background: linear-gradient(135deg, #0969da, #8250df);
+            border-color: transparent;
+        }
+        
+        .add-btn {
+            border-color: rgba(255,255,255,0.3);
+            color: #fff;
+        }
+        
+        .add-btn:hover {
+            background: linear-gradient(135deg, #0969da, #8250df);
+            border-color: transparent;
+        }
+        
+        /* Load More Button */
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            padding: 15px 40px;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #0969da, #8250df);
+            border-color: transparent;
+        }
+        
+        /* Featured Banner */
+        .featured-banner {
+            background: linear-gradient(135deg, #161b22, #0d1117);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .featured-text h3 {
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .featured-text p {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .featured-text .btn-light {
+            background: linear-gradient(135deg, #0969da, #8250df);
+            color: #fff;
+            border: none;
+        }
+        
+        .featured-text .btn-light:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(9, 105, 218, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #010409;
+            border-top-color: rgba(255,255,255,0.1);
+        }
+        
+        .footer-col {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-col h4 {
+            color: #58a6ff;
+        }
+        
+        .footer-col a {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-col a:hover {
+            color: #fff;
+        }
+        
+        .footer-col p {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .footer-bottom {
+            color: rgba(255,255,255,0.4);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        
+        /* Toast */
+        .toast {
+            background: linear-gradient(135deg, #0969da, #8250df);
+            color: #fff;
+        }
+        
+        /* Modal */
+        .modal-content {
+            background: #0d1117;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .modal-close {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .modal-body {
+            color: #fff;
+        }
+        
+        .modal-section h3 {
+            color: #fff;
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+        
+        .repo-item, .gist-item {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .repo-item:hover, .gist-item:hover {
+            border-color: #58a6ff;
+        }
+        
+        .repo-description {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .repo-meta {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .loading-state, .empty-state {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .loading-spinner {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Follower Items */
+        .follower-name {
+            color: #fff;
+        }
+        
+        .follower-avatar {
+            border-color: rgba(255,255,255,0.2);
+        }
+        
+        .follower-item:hover .follower-avatar {
+            border-color: #58a6ff;
+        }
+        
+        /* Search Wrapper */
+        .search-wrapper input {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        
+        .search-wrapper input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .search-wrapper input:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: #58a6ff;
+            outline: none;
+        }
+        
+        .search-wrapper .search-icon {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Cart Icon */
+        .cart-icon {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .cart-icon:hover {
+            color: #fff;
+        }
+        
+        /* User stats in cards */
+        .user-stats {
+            border-top-color: rgba(255,255,255,0.1);
+        }
+        
+        .stat-item {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .stat-value {
+            color: #fff;
+        }
+        
+        /* Bio and user info */
+        .user-bio {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .user-location {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        /* Profile header */
+        .profile-header h2 {
+            color: #fff;
+        }
+        
+        .profile-header p {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Input fields in forms */
+        input, select, textarea {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Grid heading */
+        #profileGrid h3 {
+            color: #fff;
+        }
+        
+        /* User not found message */
+        .user-not-found {
+            background: rgba(255,0,0,0.1);
+            border: 1px solid rgba(255,100,100,0.3);
+            color: #ff6b6b;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        /* Scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* Terminal Preview */
+        .terminal-preview {
+            background: #010409;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #7ee787;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        
+        .terminal-preview code {
+            color: #7ee787;
+        }
+        
+        /* Loading States */
+        .loading-state {
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .loading-state i {
+            color: #58a6ff;
+        }
+        
+        /* Empty grid message */
+        .no-results {
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 40px;
+        }
+        
+        /* Product grid styling */
+        .product-grid {
+            background: transparent;
+        }
+        
+        /* Load more wrapper */
+        .load-more-wrapper {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        /* Menu Panel Styles */
+        .menu-category-link:hover,
+        .menu-nav-link:hover {
+            background: rgba(255,255,255,0.08) !important;
+            transform: translateX(5px);
+        }
+        
+        .menu-column button:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(255,255,255,0.2) !important;
+            transform: translateY(-3px);
+        }
+        
+        #menuSearchInput:focus {
+            background: rgba(255,255,255,0.1) !important;
+            border-color: #58a6ff !important;
+            outline: none;
+        }
+        
+        #menuFollowingList::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        #menuFollowingList::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        
+        .menu-following-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-following-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+        }
+        
+        .menu-following-item img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .menu-following-item .username {
+            flex: 1;
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        
+        .menu-following-item .unfollow-btn {
+            opacity: 0;
+            padding: 5px 10px;
+            background: rgba(255,100,100,0.2);
+            border: none;
+            border-radius: 5px;
+            color: #ff6b6b;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-following-item:hover .unfollow-btn {
+            opacity: 1;
+        }
+        
+        .menu-following-item .unfollow-btn:hover {
+            background: rgba(255,100,100,0.4);
+        }
+        
+        /* Following Dropdown Styles */
+        #followingDropdown {
+            animation: dropdownSlide 0.3s ease;
+        }
+        
+        @keyframes dropdownSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        #followingDropdownList::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        #followingDropdownList::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        
+        .dropdown-following-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .dropdown-following-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .dropdown-following-item img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: linear-gradient(#0d1117, #0d1117) padding-box, linear-gradient(135deg, #0969da, #8250df) border-box;
+        }
+        
+        .dropdown-following-item .user-info {
+            flex: 1;
+        }
+        
+        .dropdown-following-item .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .dropdown-following-item .user-handle {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        
+        .dropdown-following-item .unfollow-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .dropdown-following-item:hover .unfollow-btn {
+            opacity: 1;
+        }
+        
+        .dropdown-following-item .unfollow-btn:hover {
+            background: rgba(255,100,100,0.2);
+            border-color: rgba(255,100,100,0.4);
+            color: #ff6b6b;
+        }
+        
+        #clearFollowingBtn:hover {
+            background: rgba(255,100,100,0.1) !important;
+            border-color: rgba(255,100,100,0.5) !important;
+        }
+        
+        /* Following button in navbar */
+        #followingContainer {
+            position: relative !important;
+        }
+        
+        #followingContainer .wrapper-block-menu {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        #followCount {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+        }
+        
+        /* Footer Styles */
+        .footer a:hover {
+            color: #fff !important;
+        }
+        
+        .footer a[style*="border-radius: 10px"]:hover {
+            background: rgba(255,255,255,0.1) !important;
+            border-color: rgba(255,255,255,0.2) !important;
+            transform: translateY(-2px);
+        }
+        
+        .footer a[title="Back to top"]:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 10px 30px rgba(9, 105, 218, 0.3);
+        }
+        
+        /* Featured Banner Responsive */
+        @media (max-width: 900px) {
+            .featured-banner {
+                grid-template-columns: 1fr !important;
+                gap: 40px !important;
+                text-align: center;
+            }
+            
+            .featured-banner .featured-text > div:last-child {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .footer > .container > div:first-child {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 40px !important;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .footer > .container > div:first-child {
+                grid-template-columns: 1fr !important;
+                gap: 35px !important;
+            }
+            
+            .footer > .container > div:last-child {
+                flex-direction: column !important;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .block-container-menu {
+                grid-template-columns: 1fr !important;
+                padding: 40px 30px !important;
+                gap: 30px !important;
+            }
+            
+            .menu-column {
+                padding-bottom: 30px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .menu-column:last-child {
+                border-bottom: none;
+            }
+            
+            #followingDropdown {
+                width: 90vw !important;
+                max-width: 350px !important;
+                right: -50px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #followingDropdown {
+                position: fixed !important;
+                top: 70px !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%);
+                width: calc(100vw - 30px) !important;
+                max-width: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body class="body">
@@ -104,20 +740,32 @@
                         <div class="text text-menu">Explore</div>
                     </div>
                 </a>
-                <a data-w-id="926bac28-64d2-095c-93ee-8b5329f81321" href="#features" class="block-menu-wrapper w-inline-block">
+                <a data-w-id="926bac28-64d2-095c-93ee-8b5329f81321" href="#" class="block-menu-wrapper w-inline-block" id="followingContainer" onclick="event.preventDefault(); toggleFollowingDropdown();">
                     <div class="block-bg-menu"></div>
-                    <div class="wrapper-block-menu">
-                        <div class="text text-menu">Features</div>
+                    <div class="wrapper-block-menu" id="cartBtn">
+                        <div class="text text-menu">Following</div>
+                        <span id="followCount" style="background: linear-gradient(135deg, #bf3989, #f778ba); padding: 2px 8px; border-radius: 8px; font-size: 11px; margin-left: 6px; min-width: 20px; text-align: center;">0</span>
+                    </div>
+                    <!-- Following Dropdown -->
+                    <div id="followingDropdown" onclick="event.stopPropagation();" style="display: none; position: absolute; top: 100%; right: 0; width: 320px; max-height: 400px; background: rgba(13,17,23,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; margin-top: 10px; overflow: hidden; z-index: 1000; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                        <div style="padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-family: 'Orbitron', sans-serif; font-size: 14px; color: #fff;"><i class="fa-solid fa-heart" style="color: #f778ba; margin-right: 8px;"></i>Following</span>
+                            <span id="dropdownFollowCount" style="font-size: 12px; color: rgba(255,255,255,0.5);">0 users</span>
+                        </div>
+                        <div id="followingDropdownList" style="max-height: 280px; overflow-y: auto; padding: 10px;">
+                            <div style="text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.4);">
+                                <i class="fa-solid fa-user-plus" style="font-size: 2.5rem; margin-bottom: 15px; display: block; color: rgba(255,255,255,0.2);"></i>
+                                <p style="font-size: 13px;">No users followed yet</p>
+                                <p style="font-size: 11px; margin-top: 5px;">Click + on profiles to follow</p>
+                            </div>
+                        </div>
+                        <div style="padding: 12px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02);">
+                            <button onclick="clearAllFollowing()" id="clearFollowingBtn" style="width: 100%; padding: 10px; background: transparent; border: 1px solid rgba(255,100,100,0.3); border-radius: 8px; color: rgba(255,100,100,0.8); font-size: 12px; cursor: pointer; transition: all 0.3s ease; display: none;">
+                                <i class="fa-solid fa-trash"></i> Clear All
+                            </button>
+                        </div>
                     </div>
                 </a>
-                <div class="block-menu-wrapper" style="position: relative;">
-                    <div class="block-bg-menu"></div>
-                    <div class="wrapper-block-menu" id="cartBtn" style="cursor: pointer;">
-                        <i class="fa-solid fa-user-plus" style="margin-right: 8px;"></i>
-                        <span class="text text-menu">Following</span>
-                        <span id="followCount" style="background: #ff3366; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 8px;">0</span>
-                    </div>
-                </div>
                 <a role="button" aria-label="Open menu" data-w-id="926bac28-64d2-095c-93ee-8b5329f81326" href="#" class="block-menu w-inline-block">
                     <div class="block-bg-menu"></div>
                     <div class="wrapper-block-menu">
@@ -131,7 +779,7 @@
             </div>
         </div>
         <div class="wrapper-container-menu">
-            <a role="button" aria-label="Open menu" data-w-id="d3bcdb9a-950c-52d1-37a1-9febcb6f37c0" href="#" class="block-menu absolute w-inline-block">
+            <a role="button" aria-label="Close menu" data-w-id="d3bcdb9a-950c-52d1-37a1-9febcb6f37c0" href="#" class="block-menu absolute w-inline-block">
                 <div class="block-bg-menu"></div>
                 <div class="wrapper-block-menu">
                     <div class="text text-menu display-none">Menu</div>
@@ -141,63 +789,149 @@
                     </div>
                 </div>
             </a>
-            <div class="block-container-menu">
-                <div class="block-left-container-menu">
-                    <div class="block-social-footer">
-                        <a href="#" class="wrapper-link w-inline-block nav-link" data-category="all">
-                            <div class="text">[</div>
-                            <div data-w-id="926bac28-64d2-095c-93ee-8b5329f81335" class="link-hover">
-                                <div class="text">All Users</div>
-                                <div class="text">All Users</div>
+            <div class="block-container-menu" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; padding: 60px 80px; max-width: 1400px; margin: 0 auto;">
+                
+                <!-- Column 1: Quick Search & Categories -->
+                <div class="menu-column" style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="menu-section">
+                        <div class="menu-section-title" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #58a6ff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-search"></i> Quick Search
+                        </div>
+                        <div style="position: relative;">
+                            <input type="text" id="menuSearchInput" placeholder="Search GitHub users..." style="width: 100%; padding: 15px 20px 15px 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 14px; transition: all 0.3s ease;">
+                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4);"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <div class="menu-section-title" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #f778ba; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-filter"></i> Browse Categories
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <a href="#profiles" class="menu-category-link" data-category="all" onclick="filterByCategory('all'); closeMenuPanel();" style="display: flex; align-items: center; gap: 15px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: rgba(255,255,255,0.8); text-decoration: none; transition: all 0.3s ease; font-size: 14px;">
+                                <i class="fa-solid fa-globe" style="width: 20px; color: #58a6ff;"></i>
+                                <span>All Users</span>
+                                <span style="margin-left: auto; font-size: 11px; padding: 4px 10px; background: rgba(88,166,255,0.2); border-radius: 20px; color: #58a6ff;" id="menuAllCount">0</span>
+                            </a>
+                            <a href="#profiles" class="menu-category-link" data-category="User" onclick="filterByCategory('User'); closeMenuPanel();" style="display: flex; align-items: center; gap: 15px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: rgba(255,255,255,0.8); text-decoration: none; transition: all 0.3s ease; font-size: 14px;">
+                                <i class="fa-solid fa-user-astronaut" style="width: 20px; color: #7ee787;"></i>
+                                <span>Developers</span>
+                                <span style="margin-left: auto; font-size: 11px; padding: 4px 10px; background: rgba(126,231,135,0.2); border-radius: 20px; color: #7ee787;" id="menuDevCount">0</span>
+                            </a>
+                            <a href="#profiles" class="menu-category-link" data-category="Organization" onclick="filterByCategory('Organization'); closeMenuPanel();" style="display: flex; align-items: center; gap: 15px; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: rgba(255,255,255,0.8); text-decoration: none; transition: all 0.3s ease; font-size: 14px;">
+                                <i class="fa-solid fa-building" style="width: 20px; color: #d2a8ff;"></i>
+                                <span>Organizations</span>
+                                <span style="margin-left: auto; font-size: 11px; padding: 4px 10px; background: rgba(210,168,255,0.2); border-radius: 20px; color: #d2a8ff;" id="menuOrgCount">0</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Column 2: Navigation & Quick Actions -->
+                <div class="menu-column" style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="menu-section">
+                        <div class="menu-section-title" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #7ee787; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-compass"></i> Navigation
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <a href="#hero" onclick="closeMenuPanel();" class="menu-nav-link" style="display: flex; align-items: center; gap: 15px; padding: 16px 20px; color: rgba(255,255,255,0.9); text-decoration: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 600;">
+                                <span style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0969da, #8250df); border-radius: 10px;">
+                                    <i class="fa-solid fa-home"></i>
+                                </span>
+                                Home
+                            </a>
+                            <a href="#profiles" onclick="closeMenuPanel();" class="menu-nav-link" style="display: flex; align-items: center; gap: 15px; padding: 16px 20px; color: rgba(255,255,255,0.9); text-decoration: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 600;">
+                                <span style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #7ee787, #2ea043); border-radius: 10px;">
+                                    <i class="fa-solid fa-users"></i>
+                                </span>
+                                Explore Profiles
+                            </a>
+                            <a href="https://github.com" target="_blank" onclick="closeMenuPanel();" class="menu-nav-link" style="display: flex; align-items: center; gap: 15px; padding: 16px 20px; color: rgba(255,255,255,0.9); text-decoration: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 600;">
+                                <span style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f778ba, #bf3989); border-radius: 10px;">
+                                    <i class="fa-brands fa-github"></i>
+                                </span>
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <div class="menu-section-title" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #ffa657; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-bolt"></i> Quick Actions
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <button onclick="loadRandomUsers(); closeMenuPanel();" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fa-solid fa-shuffle" style="font-size: 1.3rem; color: #58a6ff;"></i>
+                                <span style="font-size: 12px;">Random</span>
+                            </button>
+                            <button onclick="sortByFollowers(); closeMenuPanel();" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fa-solid fa-fire" style="font-size: 1.3rem; color: #f778ba;"></i>
+                                <span style="font-size: 12px;">Popular</span>
+                            </button>
+                            <button onclick="sortByRepos(); closeMenuPanel();" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fa-solid fa-code-branch" style="font-size: 1.3rem; color: #7ee787;"></i>
+                                <span style="font-size: 12px;">Most Repos</span>
+                            </button>
+                            <button onclick="sortByName(); closeMenuPanel();" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s ease;">
+                                <i class="fa-solid fa-arrow-down-a-z" style="font-size: 1.3rem; color: #ffa657;"></i>
+                                <span style="font-size: 12px;">A-Z Sort</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Column 3: Following List & Stats -->
+                <div class="menu-column" style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="menu-section">
+                        <div class="menu-section-title" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #d2a8ff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-heart"></i> Following <span id="menuFollowCount" style="background: #bf3989; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px;">0</span>
+                        </div>
+                        <div id="menuFollowingList" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 10px;">
+                            <div style="text-align: center; padding: 30px 20px; color: rgba(255,255,255,0.4); font-size: 13px;">
+                                <i class="fa-solid fa-user-plus" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                                No users followed yet
                             </div>
-                            <div class="text">]</div>
-                        </a>
-                        <a href="#" class="wrapper-link w-inline-block nav-link" data-category="Organization">
-                            <div class="text">[</div>
-                            <div data-w-id="926bac28-64d2-095c-93ee-8b5329f8133f" class="link-hover">
-                                <div class="text">Organizations</div>
-                                <div class="text">Organizations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-section">
+                        <div class="menu-section-title" style="font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #a5d6ff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-chart-simple"></i> Statistics
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.2); border-radius: 12px; padding: 18px; text-align: center;">
+                                <div style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; color: #58a6ff;" id="menuTotalUsers">0</div>
+                                <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px;">Total Loaded</div>
                             </div>
-                            <div class="text">]</div>
-                        </a>
-                        <a href="#" class="wrapper-link w-inline-block nav-link" data-category="User">
-                            <div class="text">[</div>
-                            <div data-w-id="926bac28-64d2-095c-93ee-8b5329f81349" class="link-hover">
-                                <div class="text">Developers</div>
-                                <div class="text">Developers</div>
+                            <div style="background: rgba(247,120,186,0.1); border: 1px solid rgba(247,120,186,0.2); border-radius: 12px; padding: 18px; text-align: center;">
+                                <div style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; color: #f778ba;" id="menuFollowingCount">0</div>
+                                <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px;">Following</div>
                             </div>
-                            <div class="text">]</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-section" style="margin-top: auto;">
+                        <a href="https://github.com" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 25px; background: linear-gradient(135deg, #0969da, #8250df); border-radius: 12px; color: #fff; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fa-brands fa-github" style="font-size: 1.3rem;"></i>
+                            Visit GitHub
                         </a>
                     </div>
                 </div>
-                <div class="block-right-container-menu">
-                    <div class="text-number muted">Navigation</div>
-                    <div class="wrapper-link-menu">
-                        <a data-w-id="926bac28-64d2-095c-93ee-8b5329f81354" href="#hero" class="block-link-menu w-inline-block">
-                            <div class="counting-text">Home</div>
-                            <div class="border"></div>
-                        </a>
-                        <a data-w-id="926bac28-64d2-095c-93ee-8b5329f81358" href="#profiles" class="block-link-menu w-inline-block">
-                            <div class="counting-text">Profiles</div>
-                            <div class="border"></div>
-                        </a>
-                        <a data-w-id="926bac28-64d2-095c-93ee-8b5329f8135c" href="#features" class="block-link-menu w-inline-block">
-                            <div class="counting-text">Features</div>
-                            <div class="border"></div>
-                        </a>
-                        <a data-w-id="926bac28-64d2-095c-93ee-8b5329f81360" href="#contact-us" class="block-link-menu w-inline-block">
-                            <div class="counting-text">Contact</div>
-                            <div class="border"></div>
-                        </a>
-                    </div>
-                </div>
+                
             </div>
-            <div class="block-footer footer-menu">
-                <div class="block-powered-by">
-                    <div class="text text-light">GitHub Profile Shop | Made with </div>
-                    <a href="https://github.com" class="w-inline-block">
-                        <div class="text"><i class="fa-solid fa-heart"></i></div>
-                    </a>
+            <div class="block-footer footer-menu" style="padding: 20px 80px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div class="block-powered-by" style="display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1400px; margin: 0 auto;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div class="text text-light" style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-brands fa-github"></i> GitHub Profile Shop
+                        </div>
+                        <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.2);"></div>
+                        <div class="text text-light" style="font-size: 12px; color: rgba(255,255,255,0.4);">Made by DivyanshuXOR</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="font-size: 12px; color: rgba(255,255,255,0.4);">Press ESC to close</span>
+                        <kbd style="padding: 4px 10px; background: rgba(255,255,255,0.1); border-radius: 5px; font-size: 11px; color: rgba(255,255,255,0.6);">ESC</kbd>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,7 +991,7 @@
                                     </div>
                                 </div>
                                 <div class="wrapper-desc-title slide-right">
-                                    <div data-w-id="11adf63e-1d48-6396-cf54-c1624cfc3127" style="opacity:0" class="text align-right">From vibe code to holiday mode</div>
+                                    <div data-w-id="11adf63e-1d48-6396-cf54-c1624cfc3127" style="opacity:0" class="text align-right">Discover developers worldwide</div>
                                 </div>
                             </div>
                         </div>
@@ -300,50 +1034,131 @@
             <button class="btn btn-secondary" id="loadMoreBtn">Load More</button>
         </div>
 
-        <section class="featured-banner">
+        <section class="featured-banner" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; background: linear-gradient(135deg, rgba(9,105,218,0.1), rgba(130,80,223,0.1), rgba(191,57,137,0.1)); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 50px; margin-top: 60px;">
             <div class="featured-text">
-                <h3>GitHub Copilot Amazeball</h3>
-                <p>A new way to answer your most pressing coding questions.</p>
-                <button class="btn btn-light">Shop Now</button>
+                <div style="display: inline-block; padding: 6px 14px; background: linear-gradient(135deg, #0969da, #8250df); border-radius: 20px; font-size: 12px; font-family: 'Orbitron', sans-serif; margin-bottom: 20px;">
+                    <i class="fa-solid fa-rocket"></i> Pro Tip
+                </div>
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin-bottom: 15px; line-height: 1.3;">Find Your Next Collaborator</h3>
+                <p style="color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 25px;">Search for developers by username, explore their repositories, and connect with talented minds from the open source community.</p>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="#profiles" class="btn btn-light" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: linear-gradient(135deg, #0969da, #8250df); border: none; border-radius: 10px; color: #fff; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 600;">
+                        <i class="fa-solid fa-search"></i> Start Exploring
+                    </a>
+                    <a href="https://github.com/trending" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 600;">
+                        <i class="fa-solid fa-fire"></i> Trending
+                    </a>
+                </div>
             </div>
-            <div class="terminal-preview" id="terminalPreview">
-                <code>> git checkout holiday-mode</code><br>
-                <code>> npm install delight</code><br>
-                <code>> <span class="blink">_</span></code>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 25px; text-align: center;">
+                    <i class="fa-solid fa-users" style="font-size: 2rem; color: #58a6ff; margin-bottom: 15px;"></i>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff;">100M+</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Developers</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 25px; text-align: center;">
+                    <i class="fa-solid fa-code-branch" style="font-size: 2rem; color: #7ee787; margin-bottom: 15px;"></i>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff;">400M+</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Repositories</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 25px; text-align: center;">
+                    <i class="fa-solid fa-building" style="font-size: 2rem; color: #d2a8ff; margin-bottom: 15px;"></i>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff;">4M+</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Organizations</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 25px; text-align: center;">
+                    <i class="fa-solid fa-star" style="font-size: 2rem; color: #f778ba; margin-bottom: 15px;"></i>
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff;">1B+</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Contributions</div>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-col">
-                    <i class="fa-brands fa-github fa-2x"></i>
-                    <p>© 2026 GitHub Profile Shop</p>
+    <footer class="footer" style="background: #010409; border-top: 1px solid rgba(255,255,255,0.1); padding: 60px 0 30px;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            
+            <!-- Footer Top Section -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px;">
+                
+                <!-- Brand Column -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                        <i class="fa-brands fa-github" style="font-size: 2.5rem; color: #fff;"></i>
+                        <span style="font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fff;">Profile Shop</span>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 25px; font-size: 14px;">
+                        Discover amazing developers and organizations from the GitHub community. Follow your favorites and explore the open source world.
+                    </p>
+                    <div style="display: flex; gap: 12px;">
+                        <a href="https://github.com" target="_blank" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: rgba(255,255,255,0.7); transition: all 0.3s ease; text-decoration: none;">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="https://x.com/github" target="_blank" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: rgba(255,255,255,0.7); transition: all 0.3s ease; text-decoration: none;">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/github" target="_blank" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: rgba(255,255,255,0.7); transition: all 0.3s ease; text-decoration: none;">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://youtube.com/github" target="_blank" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: rgba(255,255,255,0.7); transition: all 0.3s ease; text-decoration: none;">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="footer-col">
-                    <h4>Shop</h4>
-                    <a href="#">New Arrivals</a>
-                    <a href="#">Best Sellers</a>
-                    <a href="#">Gift Cards</a>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #58a6ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Quick Links</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="#hero" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Home</a>
+                        <a href="#profiles" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Explore Profiles</a>
+                        <a href="https://github.com/trending" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Trending Repos</a>
+                        <a href="https://github.com/explore" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Explore GitHub</a>
+                    </div>
                 </div>
-                <div class="footer-col">
-                    <h4>Support</h4>
-                    <a href="#">Help</a>
-                    <a href="#">Returns</a>
-                    <a href="#">Contact</a>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #7ee787; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Resources</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="https://docs.github.com" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Documentation</a>
+                        <a href="https://docs.github.com/en/rest" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">API Reference</a>
+                        <a href="https://github.blog" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">GitHub Blog</a>
+                        <a href="https://skills.github.com" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">GitHub Skills</a>
+                    </div>
                 </div>
-                <div class="footer-col">
-                    <h4>Community</h4>
-                    <a href="#">Twitter</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">TikTok</a>
+                
+                <!-- About -->
+                <div>
+                    <h4 style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #f778ba; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">About</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="https://github.com/about" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">About GitHub</a>
+                        <a href="https://github.com/about/careers" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Careers</a>
+                        <a href="https://github.com/security" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Security</a>
+                        <a href="https://support.github.com" target="_blank" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">Support</a>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>Funny Easter Egg: Try the Konami Code (↑↑↓↓←→←→BA)</p>
+            
+            <!-- Divider -->
+            <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); margin-bottom: 30px;"></div>
+            
+            <!-- Footer Bottom -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <p style="color: rgba(255,255,255,0.4); font-size: 13px;">© 2026 GitHub Profile Shop. All rights reserved.</p>
+                    <span style="color: rgba(255,255,255,0.2);">•</span>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 13px;">Made by DivyanshuXOR</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="color: rgba(255,255,255,0.3); font-size: 12px;">Easter Egg: Try ↑↑↓↓←→←→BA</span>
+                    <a href="#hero" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0969da, #8250df); border-radius: 10px; color: #fff; text-decoration: none; transition: transform 0.3s ease;" title="Back to top">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </a>
+                </div>
             </div>
+            
         </div>
     </footer>
 

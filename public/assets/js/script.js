@@ -1248,3 +1248,357 @@ styleSheet.innerText = `
     }
 `;
 document.head.appendChild(styleSheet);
+
+/* --- MENU PANEL FUNCTIONS --- */
+
+/**
+ * Close the menu panel (triggers Webflow animation)
+ */
+function closeMenuPanel() {
+    // Trigger the close button click to use Webflow's animation
+    const closeBtn = document.querySelector('.block-menu.absolute');
+    if (closeBtn) {
+        closeBtn.click();
+    }
+}
+
+/**
+ * Update menu statistics and counts
+ */
+function updateMenuStats() {
+    // Update total users count
+    const totalUsersEl = document.getElementById('menuTotalUsers');
+    const allCountEl = document.getElementById('menuAllCount');
+    if (totalUsersEl) totalUsersEl.textContent = usersData.length;
+    if (allCountEl) allCountEl.textContent = usersData.length;
+    
+    // Update developer count
+    const devCountEl = document.getElementById('menuDevCount');
+    if (devCountEl) {
+        const devCount = usersData.filter(u => u.type === 'User').length;
+        devCountEl.textContent = devCount;
+    }
+    
+    // Update organization count
+    const orgCountEl = document.getElementById('menuOrgCount');
+    if (orgCountEl) {
+        const orgCount = usersData.filter(u => u.type === 'Organization').length;
+        orgCountEl.textContent = orgCount;
+    }
+    
+    // Update following count in menu
+    const menuFollowCount = document.getElementById('menuFollowCount');
+    const menuFollowingCount = document.getElementById('menuFollowingCount');
+    if (menuFollowCount) menuFollowCount.textContent = cart.size;
+    if (menuFollowingCount) menuFollowingCount.textContent = cart.size;
+    
+    // Update following list in menu
+    updateMenuFollowingList();
+}
+
+/**
+ * Update the following list in the menu panel
+ */
+function updateMenuFollowingList() {
+    const listContainer = document.getElementById('menuFollowingList');
+    if (!listContainer) return;
+    
+    if (cart.size === 0) {
+        listContainer.innerHTML = `
+            <div style="text-align: center; padding: 30px 20px; color: rgba(255,255,255,0.4); font-size: 13px;">
+                <i class="fa-solid fa-user-plus" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                No users followed yet
+            </div>
+        `;
+        return;
+    }
+    
+    // Build the following list HTML
+    const followingArray = Array.from(cart);
+    listContainer.innerHTML = followingArray.map(username => {
+        const user = usersData.find(u => u.login === username);
+        const avatarUrl = user ? user.avatar_url : `https://github.com/${username}.png`;
+        return `
+            <div class="menu-following-item">
+                <img src="${avatarUrl}" alt="${username}" onerror="this.src='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'">
+                <span class="username">@${username}</span>
+                <button class="unfollow-btn" onclick="unfollowFromMenu('${username}')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Unfollow a user from the menu panel
+ */
+function unfollowFromMenu(username) {
+    cart.delete(username);
+    updateFollowCount();
+    updateMenuStats();
+    showToast(`👋 Unfollowed @${username}`);
+    
+    // Re-render grid if showing all users to update button states
+    const searchTerm = searchInput.value.trim();
+    if (searchTerm === '') {
+        renderGrid(usersData);
+    }
+}
+
+/**
+ * Filter users by category
+ */
+function filterByCategory(category) {
+    let filtered;
+    if (category === 'all') {
+        filtered = usersData;
+    } else {
+        filtered = usersData.filter(u => u.type === category);
+    }
+    renderGrid(filtered);
+    
+    // Scroll to profiles section
+    document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Sort users by followers (most popular)
+ */
+function sortByFollowers() {
+    sortSelect.value = 'followers';
+    const sorted = [...usersData].sort((a, b) => (b.followers || b.price || 0) - (a.followers || a.price || 0));
+    renderGrid(sorted);
+    document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Sort users by repository count
+ */
+function sortByRepos() {
+    sortSelect.value = 'repos';
+    const sorted = [...usersData].sort((a, b) => (b.public_repos || 0) - (a.public_repos || 0));
+    renderGrid(sorted);
+    document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Sort users alphabetically by name
+ */
+function sortByName() {
+    sortSelect.value = 'name';
+    const sorted = [...usersData].sort((a, b) => a.login.localeCompare(b.login));
+    renderGrid(sorted);
+    document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Load random users (shuffle current users)
+ */
+function loadRandomUsers() {
+    const shuffled = [...usersData].sort(() => Math.random() - 0.5);
+    renderGrid(shuffled);
+    document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+    showToast('🎲 Showing random order!');
+}
+
+/**
+ * Menu search functionality
+ */
+const menuSearchInput = document.getElementById('menuSearchInput');
+if (menuSearchInput) {
+    let menuSearchTimeout;
+    
+    menuSearchInput.addEventListener('input', (e) => {
+        clearTimeout(menuSearchTimeout);
+        const term = e.target.value.trim();
+        
+        menuSearchTimeout = setTimeout(() => {
+            if (term.length >= 2) {
+                // Copy term to main search input and trigger search
+                searchInput.value = term;
+                handleSearch(term);
+                closeMenuPanel();
+                document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 500);
+    });
+    
+    menuSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            clearTimeout(menuSearchTimeout);
+            const term = menuSearchInput.value.trim();
+            
+            if (term === '') {
+                return;
+            }
+            
+            searchInput.value = term;
+            handleSearch(term);
+            closeMenuPanel();
+            document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+// Close menu with ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeMenuPanel();
+    }
+});
+
+// Update menu stats whenever users are loaded or cart changes
+// Override the original renderGrid to also update menu stats
+const originalRenderGrid = renderGrid;
+renderGrid = function(data) {
+    originalRenderGrid(data);
+    updateMenuStats();
+};
+
+// Override toggleFollow to update menu stats
+const originalToggleFollow = toggleFollow;
+toggleFollow = function(username, btn) {
+    originalToggleFollow(username, btn);
+    updateMenuStats();
+};
+
+// Initial update of menu stats after a short delay
+setTimeout(updateMenuStats, 1500);
+
+/* --- FOLLOWING DROPDOWN FUNCTIONS --- */
+
+let isDropdownOpen = false;
+
+/**
+ * Toggle the following dropdown visibility
+ */
+function toggleFollowingDropdown() {
+    const dropdown = document.getElementById('followingDropdown');
+    if (!dropdown) return;
+    
+    isDropdownOpen = !isDropdownOpen;
+    dropdown.style.display = isDropdownOpen ? 'block' : 'none';
+    
+    if (isDropdownOpen) {
+        updateFollowingDropdown();
+    }
+}
+
+/**
+ * Update the following dropdown content
+ */
+function updateFollowingDropdown() {
+    const listContainer = document.getElementById('followingDropdownList');
+    const countEl = document.getElementById('dropdownFollowCount');
+    const clearBtn = document.getElementById('clearFollowingBtn');
+    
+    if (!listContainer) return;
+    
+    // Update count
+    if (countEl) countEl.textContent = `${cart.size} user${cart.size !== 1 ? 's' : ''}`;
+    
+    // Show/hide clear button
+    if (clearBtn) clearBtn.style.display = cart.size > 0 ? 'block' : 'none';
+    
+    if (cart.size === 0) {
+        listContainer.innerHTML = `
+            <div style="text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.4);">
+                <i class="fa-solid fa-user-plus" style="font-size: 2.5rem; margin-bottom: 15px; display: block; color: rgba(255,255,255,0.2);"></i>
+                <p style="font-size: 13px;">No users followed yet</p>
+                <p style="font-size: 11px; margin-top: 5px;">Click + on profiles to follow</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Build the following list HTML
+    const followingArray = Array.from(cart);
+    listContainer.innerHTML = followingArray.map(username => {
+        const user = usersData.find(u => u.login === username);
+        const avatarUrl = user ? user.avatar_url : `https://github.com/${username}.png`;
+        const displayName = user?.name || username;
+        return `
+            <div class="dropdown-following-item" onclick="viewUserFromDropdown('${username}')">
+                <img src="${avatarUrl}" alt="${username}" onerror="this.src='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'">
+                <div class="user-info">
+                    <div class="user-name">${displayName}</div>
+                    <div class="user-handle">@${username}</div>
+                </div>
+                <button class="unfollow-btn" onclick="event.stopPropagation(); unfollowFromDropdown('${username}')">
+                    <i class="fa-solid fa-xmark"></i> Unfollow
+                </button>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * View user profile from dropdown
+ */
+function viewUserFromDropdown(username) {
+    toggleFollowingDropdown(); // Close dropdown
+    searchInput.value = username;
+    handleSearch(username);
+    document.getElementById('profiles').scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Unfollow a user from the dropdown
+ */
+function unfollowFromDropdown(username) {
+    cart.delete(username);
+    updateFollowCount();
+    updateMenuStats();
+    updateFollowingDropdown();
+    showToast(`👋 Unfollowed @${username}`);
+    
+    // Re-render grid to update button states
+    const searchTerm = searchInput.value.trim();
+    if (searchTerm === '') {
+        renderGrid(usersData);
+    }
+}
+
+/**
+ * Clear all following
+ */
+function clearAllFollowing() {
+    if (cart.size === 0) return;
+    
+    const count = cart.size;
+    cart.clear();
+    updateFollowCount();
+    updateMenuStats();
+    updateFollowingDropdown();
+    showToast(`🗑️ Unfollowed ${count} user${count !== 1 ? 's' : ''}`);
+    
+    // Re-render grid to update button states
+    const searchTerm = searchInput.value.trim();
+    if (searchTerm === '') {
+        renderGrid(usersData);
+    }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    const container = document.getElementById('followingContainer');
+    const dropdown = document.getElementById('followingDropdown');
+    
+    if (container && dropdown && isDropdownOpen) {
+        if (!container.contains(e.target)) {
+            isDropdownOpen = false;
+            dropdown.style.display = 'none';
+        }
+    }
+});
+
+// Also update dropdown when following/unfollowing
+const originalUpdateFollowCount = updateFollowCount;
+updateFollowCount = function() {
+    originalUpdateFollowCount();
+    if (isDropdownOpen) {
+        updateFollowingDropdown();
+    }
+};
