@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D ASCII GitHub Logo Cube</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #0d1117; /* GitHub's dark background color */
+            overflow: hidden;
+            font-family: monospace; /* Essential for ASCII art */
+        }
+        #container {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';
+
+        let camera, scene, renderer, effect;
+        let cube;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let rotationVelocity = { x: 0, y: 0 };
+        const friction = 0.95; // Determines how quickly the cube stops spinning
+
+        init();
+        animate();
+
+        function init() {
+            const container = document.getElementById('container');
+
+            // 1. Create the Scene, Camera, and Renderer
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0, 0, 0); // Dark background for the scene
+
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.z = 400;
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // 2. Create the ASCII Effect
+            // Using a character set that provides good contrast for the logo
+            effect = new AsciiEffect(renderer, ' .:-+*=%@#', { invert: true, resolution: 0.18 });
+            effect.setSize(window.innerWidth, window.innerHeight);
+            effect.domElement.style.color = 'white';
+            effect.domElement.style.backgroundColor = '#0d1117'; // Match the body background
+            container.appendChild(effect.domElement);
+
+            // 3. Create the GitHub Logo Texture
+            // We generate it programmatically using a canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+
+            // Draw the GitHub Logo (simplified Octocat)
+            context.fillStyle = '#000000'; // Black background
+            context.fillRect(0, 0, 512, 512);
+            context.fillStyle = '#ffffff'; // White logo
+            
+            // Head
+            context.beginPath();
+            context.arc(256, 256, 200, 0, Math.PI * 2);
+            context.fill();
+            
+            // Ears (simplified as triangles)
+            context.beginPath();
+            context.moveTo(100, 150);
+            context.lineTo(180, 50);
+            context.lineTo(256, 150);
+            context.fill();
+            context.beginPath();
+            context.moveTo(412, 150);
+            context.lineTo(332, 50);
+            context.lineTo(256, 150);
+            context.fill();
+
+            // Body/Tail area (simplified cutout)
+            context.fillStyle = '#000000';
+            context.beginPath();
+            context.arc(256, 380, 120, Math.PI, Math.PI * 2);
+            context.fill();
+
+            const texture = new THREE.CanvasTexture(canvas);
+
+            // 4. Create the Cube with the Texture
+            const geometry = new THREE.BoxGeometry(200, 200, 200);
+            // Use MeshPhongMaterial to react to light
+            const material = new THREE.MeshPhongMaterial({ map: texture });
+            cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+
+            // 5. Implement the Lighting
+            // "3 sides a light which is ok and other 3 side are too dark"
+            // A directional light from the top-right-front will achieve this.
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
+            directionalLight.position.set(1, 1, 1); // Position the light
+            scene.add(directionalLight);
+
+            // A very faint ambient light to ensure the dark sides aren't perfectly black
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+            scene.add(ambientLight);
+
+
+            // 6. Add Event Listeners for Mouse Interaction (for physics-based rotation)
+            effect.domElement.addEventListener('mousedown', onMouseDown);
+            effect.domElement.addEventListener('mousemove', onMouseMove);
+            effect.domElement.addEventListener('mouseup', onMouseUp);
+            // Add touch support
+            effect.domElement.addEventListener('touchstart', onTouchStart);
+            effect.domElement.addEventListener('touchmove', onTouchMove);
+            effect.domElement.addEventListener('touchend', onMouseUp);
+
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            effect.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Mouse/Touch interaction handlers
+        function onMouseDown(event) {
+            isDragging = true;
+            previousMousePosition = { x: event.clientX, y: event.clientY };
+        }
+
+        function onMouseMove(event) {
+            if (isDragging) {
+                const deltaMove = {
+                    x: event.clientX - previousMousePosition.x,
+                    y: event.clientY - previousMousePosition.y
+                };
+
+                // Calculate rotation velocity based on drag distance
+                rotationVelocity.x = deltaMove.y * 0.005;
+                rotationVelocity.y = deltaMove.x * 0.005;
+
+                // Apply rotation immediately while dragging
+                cube.rotation.x += rotationVelocity.x;
+                cube.rotation.y += rotationVelocity.y;
+
+                previousMousePosition = { x: event.clientX, y: event.clientY };
+            }
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+        }
+        
+        function onTouchStart(event) {
+            if (event.touches.length === 1) {
+                isDragging = true;
+                previousMousePosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+            }
+        }
+        
+        function onTouchMove(event) {
+             if (isDragging && event.touches.length === 1) {
+                const deltaMove = {
+                    x: event.touches[0].clientX - previousMousePosition.x,
+                    y: event.touches[0].clientY - previousMousePosition.y
+                };
+                rotationVelocity.x = deltaMove.y * 0.005;
+                rotationVelocity.y = deltaMove.x * 0.005;
+                cube.rotation.x += rotationVelocity.x;
+                cube.rotation.y += rotationVelocity.y;
+                previousMousePosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+            }
+        }
+
+
+        function animate() {
+            // The browser will try to run this at 60fps
+            requestAnimationFrame(animate);
+
+            // Apply physics (momentum and friction) when not dragging
+            if (!isDragging) {
+                cube.rotation.x += rotationVelocity.x;
+                cube.rotation.y += rotationVelocity.y;
+
+                // Apply friction to slow down the rotation
+                rotationVelocity.x *= friction;
+                rotationVelocity.y *= friction;
+            }
+
+            effect.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
